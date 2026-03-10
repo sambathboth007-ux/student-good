@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="km" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>គន្លឹះដើម្បីក្លាយជាសិស្សឆ្នើម | Smart Student</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Suwannaphum:wght@400;700;900&family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --bg-color: #fff9f5;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --primary-accent: #8b5cf6; /* Violet */
+            --secondary-accent: #f472b6; /* Pink */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        .font-serif-kh { font-family: 'Suwannaphum', serif; }
+        .font-sans-kh { font-family: 'Kantumruy Pro', sans-serif; line-height: 1.8; }
+        @font-face {
+            font-family: header;
+            src: url(AKbalthom\ Freehand\ [Version\ 1.50]\ 082014.ttf);
+        }
+        ::selection {
+            background-color: var(--secondary-accent);
+            color: white;
+        }
+
+        /* --- Background Floating Blobs --- */
+        .blob {
+            position: absolute;
+            filter: blur(60px);
+            z-index: -1;
+            opacity: 0.4;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: #ddd6fe; }
+        .blob-2 { top: 40%; right: -10%; width: 350px; height: 350px; background: #fbcfe8; animation-delay: -5s; }
+        .blob-3 { bottom: -10%; left: 20%; width: 500px; height: 500px; background: #fed7aa; animation-delay: -2s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 50px) scale(1.1); }
+        }
+
+        /* --- Animations --- */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Accordion Styles (Card based) --- */
+        .accordion-item {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 20px -2px rgba(139, 92, 246, 0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .accordion-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -4px rgba(139, 92, 246, 0.15);
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+
+        .accordion-item.is-open {
+            border-color: rgba(139, 92, 246, 0.3);
+            background: #ffffff;
+        }
+
+        .accordion-title {
+            transition: color 0.3s ease;
+        }
+
+        .accordion-item:hover .accordion-title,
+        .accordion-item.is-open .accordion-title {
+            color: var(--primary-accent);
+        }
+
+        .accordion-content-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            opacity: 0;
+            transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .accordion-item.is-open .accordion-content-wrapper {
+            grid-template-rows: 1fr;
+            opacity: 1;
+        }
+
+        .accordion-inner {
+            overflow: hidden;
+        }
+
+        /* Icon rotation */
+        .toggle-icon {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .accordion-item.is-open .toggle-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="antialiased relative flex flex-col min-h-screen">
+
+    <!-- Decorative Background Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-white/50 shadow-sm transition-all duration-300">
+        <div class="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <!-- 
+                  [កន្លែងដាក់ Logo សាលា - School Logo Placeholder]
+                  អ្នកអាចប្តូរ Icon នេះទៅជារូបភាព Logo ផ្ទាល់ខ្លួន ដោយគ្រាន់តែដោះ Comment លើ tag <img> ខាងក្រោម
+                  រួចដាក់ link រូបភាពរបស់អ្នកក្នុង src="..." ហើយលុប <div> ពណ៌ស្វាយចេញ។
+                -->
+                <!-- <img src="ដាក់_Link_រូបភាព_Logo_សាលានៅទីនេះ.png" alt="School Logo" class="w-11 h-11 rounded-[14px] object-cover shadow-sm group-hover:scale-105 transition-transform" /> -->
+                
+                <div class="flex items-center justify-center w-11 h-11 bg-gradient-to-tr from-violet-500 via-fuchsia-500 to-pink-500 text-white rounded-[14px] group-hover:-rotate-6 transition-transform shadow-md overflow-hidden">
+                    <img src="https://kcm.ngs.edu.kh/wp-content/uploads/2020/08/Kourk-Pring-High-School-300x300-1.jpg" alt="school logo" class="w-full h-full object-cover">
+                </div>
+                <span class="font-sans-kh font-extrabold text-[1.4rem] md:text-2xl text-[#1e293b] tracking-tight">វិទ្យាល័យ<span class="text-[#8b5cf6]">គោកព្រីង</span></span>
+            </a>
+            
+            <nav class="hidden md:flex gap-8 font-sans-kh font-medium text-slate-600">
+                <a href="#" class="hover:text-violet-600 transition-colors">ទំព័រដើម</a>
+                <a href="#videos" class="hover:text-violet-600 transition-colors">វីដេអូ</a>
+                <a href="#tips" class="hover:text-violet-600 transition-colors">គន្លឹះទាំង១០</a>
+                <a href="#about" class="hover:text-violet-600 transition-colors">អំពីយើង</a>
+            </nav>
+
+            <button class="bg-slate-900 hover:bg-violet-600 text-white font-sans-kh font-medium px-6 py-2.5 rounded-full transition-all shadow-lg hover:shadow-violet-200 hover:-translate-y-0.5">
+                <a href="https://www.facebook.com/share/1EJksRgXKb/">
+                គេហទំព័ររបស់សាលា
+                </a>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto px-6 pt-36 pb-24 md:pt-48 md:pb-32 w-full flex flex-col items-center">
+        
+        <!-- Hero Title Section -->
+        <div class="text-center mb-24 fade-in-up w-full flex flex-col items-center" style="animation-delay: 0.1s;">
+            <div class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-violet-100/50 border border-violet-200 text-violet-700 font-sans-kh font-medium text-sm mb-6 shadow-sm">
+                <span>✨ អាថ៌កំបាំងដែលសាលាមិនធ្លាប់ប្រាប់អ្នក</span>
+            </div>
+            
+            <h1 class="font-bold text-4xl md:text-4xl lg:text-7xl leading-tight tracking-tight mb-6 text-slate-900 text-center font-serif-kh">
+                គន្លឹះដើម្បីក្លាយជា <br />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-pink-500">សិស្សឆ្នើមប្រចាំសាលា</span>
+            </h1>
+            
+            <p class="font-sans-kh text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed text-center">
+                បណ្ដុំនៃដំបូន្មានដែលត្រូវបានសម្រិតសម្រាំងយ៉ាងយកចិត្តទុកដាក់។ គ្មានផ្លូវកាត់ គ្មានភាពរញ៉េរញ៉ៃ — មានតែរឿងសំខាន់ៗដែលពិតជាមានប្រយោជន៍សម្រាប់ការសិក្សាស៊ីជម្រៅ។
+            </p>
+        </div>
+
+        <!-- NEW: Video Section -->
+        <section id="videos" class="mb-24 scroll-mt-28 fade-in-up w-full max-w-3xl flex flex-col items-center" style="animation-delay: 0.2s;">
+            <div class="flex items-center justify-center gap-3 mb-8 w-full">
+                <div class="bg-gradient-to-tr from-pink-500 to-rose-400 p-2.5 rounded-xl text-white shadow-md shadow-pink-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h2 class="font-serif-kh font-bold text-2xl md:text-3xl text-slate-800 text-center">វីដេអូណែនាំ</h2>
+            </div>
+
+            <div class="w-full">
+                <div class="group relative rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200/60 bg-white w-full">
+                    <div class="aspect-video bg-slate-100 relative rounded-t-3xl overflow-hidden w-full">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/gUmSocVC73g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="font-sans-kh font-bold text-lg text-slate-800 mb-2 group-hover:text-violet-600 transition-colors">គន្លឹះរបស់សិស្សឆ្នើម</h3>
+                        <p class="font-sans-kh text-slate-500 text-sm leading-relaxed max-w-md mx-auto">ស្វែងយល់ពីរបៀបដែលសិស្សពូកែបែងចែកពេលវេលារបស់ពួកគេប្រចាំថ្ងៃសម្រាប់ការសិក្សា និងការកម្សាន្ត។</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips Accordion List -->
+        <section id="tips" class="scroll-mt-28 fade-in-up w-full max-w-3xl flex flex-col items-center" style="animation-delay: 0.3s;">
+            <div class="flex items-center justify-center gap-3 mb-8 w-full">
+                <div class="bg-gradient-to-tr from-violet-500 to-indigo-500 p-2.5 rounded-xl text-white shadow-md shadow-violet-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                    </svg>
+                </div>
+                <h2 class="font-serif-kh font-bold text-2xl md:text-3xl text-slate-800 text-center">អត្ថបទគន្លឹះទាំង ១០</h2>
+            </div>
+
+            <div class="space-y-4 w-full" id="accordion-container">
+                <!-- Items injected by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="about" class="bg-white/80 backdrop-blur-sm border-t border-slate-200 mt-auto scroll-mt-20">
+        <div class="max-w-4xl mx-auto px-6 py-12 md:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-center text-center">
+                
+                <!-- Brand Info -->
+                <div class="flex flex-col items-center">
+                    <a href="#" class="flex items-center justify-center gap-3 group mb-4">
+                        <div class="flex items-center justify-center w-11 h-11 bg-gradient-to-tr from-violet-500 via-fuchsia-500 to-pink-500 text-white rounded-[14px] group-hover:-rotate-6 transition-transform shadow-md overflow-hidden">
+                            <img src="KHPlogo.jpg" alt="school logo" class="w-full h-full object-cover">
+                        </div>
+                        <span class="font-sans-kh font-extrabold text-2xl text-[#1e293b] tracking-tight">វិទ្យាល័យ<span class="text-[#8b5cf6]">គោកព្រីង</span></span>
+                    </a>
+                    <p class="font-sans-kh text-slate-500 text-sm max-w-xs mx-auto leading-relaxed">
+                        ចូលរួមជាមួយសហគមន៍សិស្សនិស្សិតដែលស្រលាញ់ការសិក្សា និងចង់អភិវឌ្ឍខ្លួនឲ្យកាន់តែប្រសើរឡើងជារៀងរាល់ថ្ងៃ។
+                    </p>
+                </div>
+
+                <!-- Links -->
+                <div class="flex flex-col items-center gap-3 font-sans-kh text-slate-600">
+                    <h4 class="font-bold text-slate-800 mb-2">តំណភ្ជាប់សំខាន់ៗ</h4>
+                    <a href="#" class="hover:text-violet-600 transition-colors text-center">វិធីសាស្ត្រសិក្សាថ្មីៗ</a>
+                    <a href="#" class="hover:text-violet-600 transition-colors text-center">ការរៀបចំផែនការពេលវាលា</a>
+                    <a href="#" class="hover:text-violet-600 transition-colors text-center">សៀវភៅណែនាំ</a>
+                </div>
+
+                <!-- Social & Contact -->
+                <div class="flex flex-col items-center gap-3 font-sans-kh text-slate-600">
+                    <h4 class="font-bold text-slate-800 mb-2">ទំនាក់ទំនង</h4>
+                    <p class="text-center">koukpringhighschool.edu.kh</p>
+                    <div class="flex justify-center gap-4 mt-2">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-violet-100 hover:text-violet-600 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-pink-100 hover:text-pink-600 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-blue-100 hover:text-blue-600 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-100 mt-10 pt-8 text-center font-sans-kh text-sm text-slate-400 flex flex-col items-center gap-4">
+                <p>&copy; 2026 Both12C. រក្សាសិទ្ធិគ្រប់យ៉ាង។</p>
+                <div class="flex justify-center gap-4">
+                    <a href="#" class="hover:text-slate-600 text-center">គោលការណ៍ឯកជនភាព</a>
+                    <a href="#" class="hover:text-slate-600 text-center">លក្ខខណ្ឌប្រើប្រាស់</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        const tipsData = [
+            {
+                id: '01',
+                title: 'ចាប់ផ្តើមទាំងដែលអ្នកមិនទាន់ត្រៀមខ្លួនរួចរាល់',
+                content: 'ការលើកទឹកចិត្តកើតមានបន្ទាប់ពីការអនុវត្ត មិនមែនផ្ទុយមកវិញទេ។ សិស្សដែលតែងតែទទួលបានលទ្ធផលល្អ មិនមែនជាអ្នកដែលរង់ចាំទាល់តែមានអារម្មណ៍ចង់រៀនទើបចាប់ផ្តើមនោះទេ។ ពួកគេគឺជាអ្នកដែលអង្គុយចុះហើយចាប់ផ្តើម ទោះបីជាមានការស្ទាក់ស្ទើរក៏ដោយ។ បើកសៀវភៅ។ សរសេរមួយប្រយោគ។ ដោះស្រាយមួយលំហាត់។ សកម្មភាពនៃការចាប់ផ្តើមនេះនឹងបំប្លែងភាពរារែកនៃខួរក្បាលរបស់អ្នកទៅជាសន្ទុះ។ អ្នកមិនចាំបាច់មានអារម្មណ៍ថាត្រៀមខ្លួនរួចរាល់នោះទេ អ្វីដែលអ្នកត្រូវការគឺការ "ចាប់ផ្តើម"។'
+            },
+            {
+                id: '02',
+                title: 'សិក្សាដើម្បីយល់ មិនមែនដើម្បីចាំ',
+                content: 'ការទន្ទេញចាំមាត់ងាយនឹងភ្លេច។ ការយល់ដឹងទើបឋិតថេរយូរអង្វែង។ នៅពេលដែលអ្នកស្វែងយល់ពី "ហេតុផល" នៅពីក្រោយ "បញ្ហា" អ្នកកំពុងតែកសាងរចនាសម្ព័ន្ធផ្លូវចិត្តដែលអាចទប់ទល់នឹងសម្ពាធ មិនថាជាការប្រឡង ឬបញ្ហាក្នុងជីវិតពិតនោះទេ។ សួរខ្លួនឯងបន្ទាប់ពីអានចប់៖ តើខ្ញុំអាចពន្យល់រឿងនេះទៅកាន់អ្នកដែលមិនធ្លាប់ដឹងសោះបានដែរឬទេ? បើចម្លើយគឺទេ មានន័យថាអ្នកមិនទាន់យល់វាច្បាស់នៅឡើយទេ។ អ្នកគ្រាន់តែធ្លាប់ឃើញវាតែប៉ុណ្ណោះ។'
+            },
+            {
+                id: '03',
+                title: 'កត់ត្រាដោយដៃលើចំណុចសំខាន់ៗ',
+                content: 'មានភស្តុតាងជាច្រើនបង្ហាញថា ការសរសេរដោយដៃធ្វើឱ្យខួរក្បាលដំណើរការខុសពីការវាយអត្ថបទ។ វាបង្ខំឱ្យអ្នកបន្ថយល្បឿន សង្ខេប បង្កើតឃ្លាថ្មី និងជ្រើសរើសចំណុចសំខាន់ៗ។ ភាពយឺតយ៉ាវនេះមិនមែនជាចំណុចខ្សោយទេ តែវាជាយន្តការនៃការរៀនសូត្រ។ អ្នកមិនចាំបាច់កត់ត្រាគ្រប់យ៉ាងដោយដៃទេ។ ប៉ុន្តែសម្រាប់មេរៀនដែលទាមទារការយល់ដឹងស៊ីជម្រៅ សូមទុកកុំព្យូទ័រមួយឡែក។ ប៊ិចនិងក្រដាសទទេនឹងបង្រៀនអ្នកបានច្រើនជាងអត្ថបទដែលបានវាយយ៉ាងស្អាតទៅទៀត។'
+            },
+            {
+                id: '04',
+                title: 'ការគេងគឺជារឿងចាំបាច់ដាច់ខាត',
+                content: 'ការគេងមិនគ្រប់គ្រាន់បំផ្លាញសមត្ថភាពនៃការចងចាំ និងការផ្តោតអារម្មណ៍។ ការអានសៀវភៅទល់ភ្លឺមិនមែនជាការខិតខំប្រឹងប្រែងដ៏ឆ្លាតវៃទេ វាគឺជាការខ្ចីពេលវេលាពីថ្ងៃស្អែកក្នុងអត្រាការប្រាក់ដ៏ខ្ពស់។ ផ្តល់អាទិភាពដល់ការគេងឱ្យបាន ៧ ទៅ ៨ ម៉ោង ដើម្បីឱ្យខួរក្បាលបានរៀបចំទុកដាក់ព័ត៌មានដែលអ្នកបានរៀនពេញមួយថ្ងៃឲ្យទៅជាការចងចាំរយៈពេលវែង។'
+            },
+            {
+                id: '05',
+                title: 'សួរសំណួរដោយមិនចាំបាច់ខ្មាសអៀន',
+                content: 'ភាពភ័យខ្លាចក្នុងការបង្ហាញភាពមិនដឹង គឺជាឧបសគ្គដ៏ធំបំផុតមួយចំពោះការរៀនសូត្រ។ រាល់សំណួរដែលអ្នកលាក់ទុក គឺជាចន្លោះប្រហោងនៃការយល់ដឹងដែលនឹងកើនឡើងតាមពេលវេលា ដោយលួចបំផ្លាញរាល់ចំណេះដឹងដែលអ្នកខំកសាងពីលើវា។ សិស្សឆ្នើមតែងតែសួរសំណួរឥតឈប់ឈរ — នៅក្នុងថ្នាក់រៀន ម៉ោងសិក្សា ឬក្នុងក្រុម។ ពួកគេចាត់ទុកភាពមិនយល់មិនមែនជាភាពបរាជ័យផ្ទាល់ខ្លួនទេ តែជាសញ្ញាបង្ហាញថាពួកគេកំពុងស្ថិតនៅចំណុចដែលត្រូវអភិវឌ្ឍ។'
+            },
+            {
+                id: '06',
+                title: 'បង្រៀននូវអ្វីដែលអ្នកបានរៀន',
+                content: 'ការសាកល្បងដ៏មានប្រសិទ្ធភាពបំផុតនៃការយល់ដឹងគឺការការពន្យល់។ នៅពេលដែលអ្នកព្យាយាមបង្រៀនគំនិតណាមួយទៅកាន់អ្នកដទៃ អ្នកនឹងរកឃើញចំណុចដែលអ្នកមិនទាន់យល់ច្បាស់ភ្លាមៗ។ ចែករំលែកចំណេះដឹងជាមួយមិត្តភក្តិ ពន្យល់វាឲ្យសាមញ្ញបំផុត ព្រោះការបង្រៀនអ្នកដទៃគឺជាការរៀនសម្រាប់ខ្លួនឯងម្តងទៀតយ៉ាងមានប្រសិទ្ធភាព។'
+            },
+            {
+                id: '07',
+                title: 'បង្កើតទីតាំងសម្រាប់ការងារដែលទាមទារការផ្តោតអារម្មណ៍',
+                content: 'បរិយាកាសជុំវិញខ្លួនកំណត់អាកប្បកិរិយារបស់អ្នកច្រើនជាងការព្យាយាមទៅទៀត។ តុរញ៉េរញ៉ៃ បន្ទប់អ៊ូអរ ឬទូរសព្ទនៅក្បែរដៃ មិនមែនគ្រាន់តែជារឿងរំខានតូចតាចទេ — ពួកវាជាសត្រូវសកម្មដែលរារាំងការគិតផ្តោតអារម្មណ៍។ កំណត់កន្លែងជាក់លាក់មួយសម្រាប់ការសិក្សា។ រក្សាវាឱ្យស្អាត ស្ងប់ស្ងាត់ និងទុកទូរសព្ទនៅបន្ទប់ផ្សេង។ យូរៗទៅ ខួរក្បាលរបស់អ្នកនឹងផ្សារភ្ជាប់កន្លែងនោះទៅនឹងការផ្តោតអារម្មណ៍ដោយស្វ័យប្រវត្តិ។'
+            },
+            {
+                id: '08',
+                title: 'រំលឹកមេរៀនឡើងវិញក្នុងរយៈពេល ២៤ ម៉ោង',
+                content: 'ខួរក្បាលមនុស្សបំភ្លេចព័ត៌មានថ្មីៗយ៉ាងឆាប់រហ័ស។ ការរំលឹកមេរៀនដែលទើបនឹងរៀនរួចភ្លាមៗក្នុងរយៈពេល ២៤ ម៉ោងដំបូង ជួយបញ្ឈប់វដ្តនៃការភ្លេចភ្លាំងនេះបានយ៉ាងមានប្រសិទ្ធភាព។ ចំណាយពេលត្រឹមតែ ១០ ទៅ ១៥ នាទីក្នុងការអានកំណត់ត្រារបស់អ្នកឡើងវិញ នោះអ្នកនឹងសន្សំពេលវេលាបានរាប់ម៉ោងនៅពេលដែលការប្រឡងខិតជិតមកដល់។'
+            },
+            {
+                id: '09',
+                title: 'ទទួលយកភាពធុញទ្រាន់',
+                content: 'មិនមែនគ្រប់មុខវិជ្ជាសុទ្ធតែធ្វើឱ្យអ្នកចាប់អារម្មណ៍នោះទេ។ មិនមែនរាល់កិច្ចការសុទ្ធតែមានន័យនោះទេ។ សមត្ថភាពក្នុងការធ្វើការងារដោយយកចិត្តទុកដាក់លើអ្វីដែលមិនធ្វើឱ្យអ្នករំភើប គឺជាជំនាញដ៏មានតម្លៃបំផុតដែលអ្នកអាចអភិវឌ្ឍបាន ទាំងក្នុងការសិក្សា និងក្នុងជីវិត។ ភាពធុញទ្រាន់មិនមែនជាសញ្ញាថាមានអ្វីខុសនោះទេ។ វាគឺជាសញ្ញាដែលទាមទារឱ្យអ្នកប្រើប្រាស់វិន័យផ្ទាល់ខ្លួនជាជាងចំណង់ចំណូលចិត្ត។'
+            },
+            {
+                id: '10',
+                title: 'ថែរក្សាសិស្ស មិនមែនគ្រាន់តែការសិក្សា',
+                content: 'អ្នកមិនមែនជាម៉ាស៊ីនដែលបង្កើតមកដើម្បីតែទទួលបានលទ្ធផលសិក្សានោះទេ។ អ្នកគឺជាមនុស្សម្នាក់។ សុខភាពរាងកាយ ទំនាក់ទំនង និងជីវិតផ្លូវចិត្តរបស់អ្នក — ទាំងនេះមិនមែនជារឿងរំខានដល់ការអប់រំរបស់អ្នកទេ។ ពួកវាជាមូលដ្ឋានគ្រឹះ។ ញ៉ាំឱ្យបានល្អ។ ធ្វើចលនារាងកាយ។ ចំណាយពេលជាមួយមនុស្សដែលធ្វើឱ្យអ្នកមានក្តីសុខ។ សិស្សឆ្នើមម្នាក់ ជាដំបូងនិងតែងតែ ជាមនុស្សដែលចេះថែរក្សាខ្លួនឯង។'
+            }
+        ];
+
+        const container = document.getElementById('accordion-container');
+
+        tipsData.forEach((tip, index) => {
+            const animationDelay = 0.2 + (index * 0.08); 
+
+            const itemHTML = `
+                <article class="accordion-item rounded-3xl p-2 md:p-3 fade-in-up" style="animation-delay: ${animationDelay}s;">
+                    <button class="accordion-btn w-full flex items-center justify-between px-4 py-3 md:px-6 md:py-4 focus:outline-none cursor-pointer group">
+                        
+                        <div class="flex items-center gap-4 md:gap-6 text-left">
+                            <span class="bg-violet-100 text-violet-600 font-sans-kh font-bold text-sm md:text-base px-3 py-1.5 rounded-full shrink-0 group-hover:bg-violet-600 group-hover:text-white transition-colors duration-300">
+                                ${tip.id}
+                            </span>
+                            <h3 class="accordion-title font-serif-kh text-lg md:text-2xl font-bold leading-snug">
+                                ${tip.title}
+                            </h3>
+                        </div>
+
+                        <!-- Chevron Icon -->
+                        <div class="shrink-0 text-slate-400 group-hover:text-violet-500 transition-colors ml-4">
+                            <svg class="toggle-icon w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                    </button>
+                    
+                    <div class="accordion-content-wrapper">
+                        <div class="accordion-inner">
+                            <div class="pl-[4.5rem] pr-6 pb-6 pt-2">
+                                <p class="font-sans-kh text-slate-600 text-base md:text-lg leading-relaxed text-left">
+                                    ${tip.content}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `;
+            container.insertAdjacentHTML('beforeend', itemHTML);
+        });
+
+        // Add Event Listeners for Accordion
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        
+        accordionItems.forEach(item => {
+            const btn = item.querySelector('.accordion-btn');
+            
+            btn.addEventListener('click', () => {
+                const isOpen = item.classList.contains('is-open');
+                
+                // Close others
+                accordionItems.forEach(otherItem => {
+                    otherItem.classList.remove('is-open');
+                });
+
+                // Open clicked
+                if (!isOpen) {
+                    item.classList.add('is-open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
